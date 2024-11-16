@@ -18,4 +18,4 @@ class FNode {
     void remove(int i);
     void loadfile(const string& filename);
 };
-
+#include "Fnode.cpp"

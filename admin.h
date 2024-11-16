@@ -9,4 +9,6 @@ class Admin:public User{
 		void capnhatsonuoc(FNode& tmp,int IdPhong,int sonuocsau);
 		void remove(FNode& tmp,int IdPhong);
 };
+#include "admin.cpp"
+
 

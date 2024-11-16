@@ -1,8 +1,4 @@
 #include "FNode.h"
-#include <iostream>
-#include <fstream>
-#include <sstream>
-
 using namespace std;
 FNode::FNode() {
     this->head = NULL;
@@ -71,39 +67,37 @@ Node* FNode::dangnhap(const string& taikhoan, const string& matkhau) {
     cout << "Dang nhap khong thanh cong!" << endl;
     return NULL;
 }
+void FNode::loadfile(const string& filename) {
+    ifstream tofile(filename.c_str());
+    if (!tofile.is_open()) {
+        cout << "Khong the mo file " << filename << "\n";
+        return;
+    }
 
-// // Load dữ liệu từ file
-// void FNode::loadfile(const string& filename) {
-//     ifstream tofile(filename.c_str());
-//     if (!tofile.is_open()) {
-//         cout << "Khong the mo file " << filename << "\n";
-//         return;
-//     }
+    string line;
+    while (getline(tofile, line)) {
+        stringstream ss(line);
+        string tmp;
+        int IdPhong, sodien, sonuoc;
+        string name, quyen, SDT, taikhoan, matkhau;
 
-//     string line;
-//     while (getline(tofile, line)) {
-//         stringstream ss(line);
-//         string tmp;
-//         int IdPhong, sodien, sonuoc;
-//         string name, quyen, SDT, taikhoan, matkhau;
-
-//         getline(ss, tmp, ',');
-//         IdPhong = stoi(tmp);
+        getline(ss, tmp, ',');
+        IdPhong = stoi(tmp);
         
-//         getline(ss, name, ',');
-//         getline(ss, quyen, ',');
-//         getline(ss, SDT, ',');
+        getline(ss, name, ',');
+        getline(ss, quyen, ',');
+        getline(ss, SDT, ',');
 
-//         getline(ss, tmp, ',');
-//         sodien = stoi(tmp);
+        getline(ss, tmp, ',');
+        sodien = stoi(tmp);
 
-//         getline(ss, tmp, ',');
-//         sonuoc = stoi(tmp);
+        getline(ss, tmp, ',');
+        sonuoc = stoi(tmp);
 
-//         getline(ss, taikhoan, ',');
-//         getline(ss, matkhau, ',');
+        getline(ss, taikhoan, ',');
+        getline(ss, matkhau, ',');
 
-//         them(IdPhong, name, quyen, SDT, sodien, sonuoc, taikhoan, matkhau);
-//     }
-//     tofile.close();
-// }
+        them(IdPhong, name, quyen, SDT, sodien, sonuoc, taikhoan, matkhau);
+    }
+    tofile.close();
+}
