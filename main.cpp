@@ -44,6 +44,8 @@ int main() {
     FNode fnode;
     fnode.loadfile("phongtro.txt");
     User* currentUser = nullptr;
+
+    // Đăng nhập
     while (!currentUser) {
         currentUser = login(fnode);
         if (!currentUser) {
@@ -52,6 +54,7 @@ int main() {
     }
 
     while (true) {
+        system("cls"); // Làm mới terminal
         showMenu(currentUser);
         int choice;
         cout << "Nhap lua chon: ";
@@ -61,78 +64,113 @@ int main() {
             Admin* adminUser = dynamic_cast<Admin*>(currentUser);
             switch (choice) {
                 case 1: {
-                    int IdPhong, tienPhong, sodiensau, sonuocsau;
-                    vector<string> name, SDT, taikhoan, matkhau;
-                    string quyen, temp;
+                    while (true) {
+                        int IdPhong, tienPhong, sodiensau, sonuocsau;
+                        vector<string> name, SDT, taikhoan, matkhau;
+                        string quyen, temp;
 
-                    cout << "Nhap IdPhong: ";
-                    cin >> IdPhong;
-                    cout << "Nhap tien phong: ";
-                    cin >> tienPhong;
-                    cout << "Nhap quyen: ";
-                    cin >> quyen;
-                    cout << "Nhap so dien sau: ";
-                    cin >> sodiensau;
-                    cout << "Nhap so nuoc sau: ";
-                    cin >> sonuocsau;
+                        cout << "Nhap IdPhong: ";
+                        cin >> IdPhong;
+                        cout << "Nhap tien phong: ";
+                        cin >> tienPhong;
+                        cout << "Nhap quyen: ";
+                        cin >> quyen;
+                        cout << "Nhap so dien sau: ";
+                        cin >> sodiensau;
+                        cout << "Nhap so nuoc sau: ";
+                        cin >> sonuocsau;
 
-                    cout << "Nhap ten (ket thuc bang '|'): ";
-                    while (cin >> temp && temp != "|") {
-                        name.push_back(temp);
+                        cout << "Nhap ten (ket thuc bang '|'): ";
+                        while (cin >> temp && temp != "|") {
+                            name.push_back(temp);
+                        }
+
+                        cout << "Nhap SDT (ket thuc bang '|'): ";
+                        while (cin >> temp && temp != "|") {
+                            SDT.push_back(temp);
+                        }
+
+                        cout << "Nhap tai khoan (ket thuc bang '|'): ";
+                        while (cin >> temp && temp != "|") {
+                            taikhoan.push_back(temp);
+                        }
+
+                        cout << "Nhap mat khau (ket thuc bang '|'): ";
+                        while (cin >> temp && temp != "|") {
+                            matkhau.push_back(temp);
+                        }
+
+                        int tienWifi = 50;
+                        int tienRac = 50 * name.size();
+
+                        adminUser->them(fnode, IdPhong, tienPhong, name, quyen, SDT, sodiensau, sonuocsau, tienWifi, tienRac, taikhoan, matkhau);
+
+                        cout << "Nhap 0 de quay lai menu: ";
+                        int back;
+                        cin >> back;
+                        if (back == 0) break;
                     }
-
-                    cout << "Nhap SDT (ket thuc bang '|'): ";
-                    while (cin >> temp && temp != "|") {
-                        SDT.push_back(temp);
-                    }
-
-                    cout << "Nhap tai khoan (ket thuc bang '|'): ";
-                    while (cin >> temp && temp != "|") {
-                        taikhoan.push_back(temp);
-                    }
-
-                    cout << "Nhap mat khau (ket thuc bang '|'): ";
-                    while (cin >> temp && temp != "|") {
-                        matkhau.push_back(temp);
-                    }
-
-                    int tienWifi = 50;
-                    int tienRac = 50 * name.size();
-
-                    adminUser->them(fnode, IdPhong, tienPhong, name, quyen, SDT, sodiensau, sonuocsau, tienWifi, tienRac, taikhoan, matkhau);
                     break;
                 }
                 case 2: {
-                    int IdPhong, sodiensau;
-                    cout << "Nhap IdPhong va So dien sau: ";
-                    cin >> IdPhong >> sodiensau;
-                    adminUser->capnhatsodien(fnode, IdPhong, sodiensau);
+                    while (true) {
+                        int IdPhong, sodiensau;
+                        cout << "Nhap IdPhong va So dien sau: ";
+                        cin >> IdPhong >> sodiensau;
+                        adminUser->capnhatsodien(fnode, IdPhong, sodiensau);
+
+                        cout << "Nhap 0 de quay lai menu: ";
+                        int back;
+                        cin >> back;
+                        if (back == 0) break;
+                    }
                     break;
                 }
                 case 3: {
-                    int IdPhong, sonuocsau;
-                    cout << "Nhap IdPhong va So nuoc sau: ";
-                    cin >> IdPhong >> sonuocsau;
-                    adminUser->capnhatsonuoc(fnode, IdPhong, sonuocsau);
+                    while (true) {
+                        int IdPhong, sonuocsau;
+                        cout << "Nhap IdPhong va So nuoc sau: ";
+                        cin >> IdPhong >> sonuocsau;
+                        adminUser->capnhatsonuoc(fnode, IdPhong, sonuocsau);
+
+                        cout << "Nhap 0 de quay lai menu: ";
+                        int back;
+                        cin >> back;
+                        if (back == 0) break;
+                    }
                     break;
                 }
                 case 4: {
-                    int IdPhong;
-                    cout << "Nhap IdPhong can xoa: ";
-                    cin >> IdPhong;
-                    adminUser->remove(fnode, IdPhong);
+                    while (true) {
+                        int IdPhong;
+                        cout << "Nhap IdPhong can xoa: ";
+                        cin >> IdPhong;
+                        adminUser->remove(fnode, IdPhong);
+
+                        cout << "Nhap 0 de quay lai menu: ";
+                        int back;
+                        cin >> back;
+                        if (back == 0) break;
+                    }
                     break;
                 }
                 case 5: {
-                    int IdPhong;
-                    cout << "Nhap IdPhong can xem thong tin: ";
-                    cin >> IdPhong;
-                    Node* node = fnode.Find(IdPhong);
-                    if (node) {
-                        Admin tempAdmin(node);
-                        tempAdmin.display();
-                    } else {
-                        cout << "Khong tim thay phong voi IdPhong: " << IdPhong << endl;
+                    while (true) {
+                        int IdPhong;
+                        cout << "Nhap IdPhong can xem thong tin: ";
+                        cin >> IdPhong;
+                        Node* node = fnode.Find(IdPhong);
+                        if (node) {
+                            Admin tempAdmin(node);
+                            tempAdmin.display();
+                        } else {
+                            cout << "Khong tim thay phong voi IdPhong: " << IdPhong << endl;
+                        }
+
+                        cout << "Nhap 0 de quay lai menu: ";
+                        int back;
+                        cin >> back;
+                        if (back == 0) break;
                     }
                     break;
                 }
@@ -146,7 +184,14 @@ int main() {
         } else {
             switch (choice) {
                 case 1: {
-                    currentUser->display();
+                    while (true) {
+                        currentUser->display();
+
+                        cout << "Nhap 0 de quay lai menu: ";
+                        int back;
+                        cin >> back;
+                        if (back == 0) break;
+                    }
                     break;
                 }
                 case 2:

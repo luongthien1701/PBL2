@@ -11,7 +11,7 @@ public:
     vector<string> name;
     string quyen;
     vector<string> SDT;
-    int sodientruoc, sodiensau;
+    int sodientruoc=0, sodiensau=0;
     int sonuoctruoc, sonuocsau;
     int tienWifi, tienRac;
     bool daDongTienPhong, daDongTienDien, daDongTienNuoc, daDongTienWifi, daDongTienRac;

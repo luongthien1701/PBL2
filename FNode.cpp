@@ -41,7 +41,7 @@ Node* FNode::Find(int ID) {
 Node* FNode::dangnhap(const string& taikhoan, const string& matkhau) {
     Node* temp = head;
     while (temp) {
-        for (int i = 0; i < temp->taikhoan.size(); ++i) {
+        for (size_t i = 0; i < temp->taikhoan.size(); ++i) {
             if (temp->taikhoan[i] == taikhoan && temp->matkhau[i] == matkhau) {
                 return temp;
             }
@@ -66,6 +66,7 @@ void FNode::remove(int IdPhong) {
         }
         delete temp;
     }
+    ghiLaiFile("phongtro.txt");
 }
 
 void FNode::loadfile(const string& filename) {
@@ -77,52 +78,62 @@ void FNode::loadfile(const string& filename) {
 
     string line;
     while (getline(file, line)) {
+        if (line.empty()) {
+            continue; // Bỏ qua các dòng trống
+        }
+
         stringstream ss(line);
         int IdPhong, tienPhong, sodiensau, sonuocsau, tienWifi, tienRac;
         string tenNguoi, quyen, sdt, taiKhoan, matKhau;
         bool daDongTienPhong, daDongTienDien, daDongTienNuoc, daDongTienWifi, daDongTienRac;
 
-        getline(ss, line, ',');
-        IdPhong = stoi(line);
-        getline(ss, line, ',');
-        tienPhong = stoi(line);
-        getline(ss, tenNguoi, ',');
-        getline(ss, quyen, ',');
-        getline(ss, sdt, ',');
-        getline(ss, line, ',');
-        sodiensau = stoi(line);
-        getline(ss, line, ',');
-        sonuocsau = stoi(line);
-        getline(ss, line, ',');
-        tienWifi = stoi(line);
-        getline(ss, line, ',');
-        tienRac = stoi(line);
-        getline(ss, line, ',');
-        daDongTienPhong = stoi(line);
-        getline(ss, line, ',');
-        daDongTienDien = stoi(line);
-        getline(ss, line, ',');
-        daDongTienNuoc = stoi(line);
-        getline(ss, line, ',');
-        daDongTienWifi = stoi(line);
-        getline(ss, line, ',');
-        daDongTienRac = stoi(line);
-        getline(ss, taiKhoan, ',');
-        getline(ss, matKhau, ',');
+        try {
+            getline(ss, line, ',');
+            IdPhong = stoi(line);
+            getline(ss, line, ',');
+            tienPhong = stoi(line);
+            getline(ss, tenNguoi, ',');
+            getline(ss, quyen, ',');
+            getline(ss, sdt, ',');
+            getline(ss, line, ',');
+            sodiensau = stoi(line);
+            getline(ss, line, ',');
+            sonuocsau = stoi(line);
+            getline(ss, line, ',');
+            tienWifi = stoi(line);
+            getline(ss, line, ',');
+            tienRac = stoi(line);
+            getline(ss, line, ',');
+            daDongTienPhong = stoi(line);
+            getline(ss, line, ',');
+            daDongTienDien = stoi(line);
+            getline(ss, line, ',');
+            daDongTienNuoc = stoi(line);
+            getline(ss, line, ',');
+            daDongTienWifi = stoi(line);
+            getline(ss, line, ',');
+            daDongTienRac = stoi(line);
+            getline(ss, taiKhoan, ',');
+            getline(ss, matKhau, ',');
 
-        Node* existingNode = Find(IdPhong);
-        if (existingNode) {
-            existingNode->name.push_back(tenNguoi);
-            existingNode->SDT.push_back(sdt);
-            existingNode->taikhoan.push_back(taiKhoan);
-            existingNode->matkhau.push_back(matKhau);
-        } else {
-            vector<string> name = {tenNguoi};
-            vector<string> SDT = {sdt};
-            vector<string> taikhoan = {taiKhoan};
-            vector<string> matkhau = {matKhau};
+            Node* existingNode = Find(IdPhong);
+            if (existingNode) {
+                existingNode->name.push_back(tenNguoi);
+                existingNode->SDT.push_back(sdt);
+                existingNode->taikhoan.push_back(taiKhoan);
+                existingNode->matkhau.push_back(matKhau);
+            } else {
+                vector<string> name = {tenNguoi};
+                vector<string> SDT = {sdt};
+                vector<string> taikhoan = {taiKhoan};
+                vector<string> matkhau = {matKhau};
 
-            them(IdPhong, tienPhong, name, quyen, SDT, sodiensau, sonuocsau, tienWifi, tienRac, taikhoan, matkhau);
+                them(IdPhong, tienPhong, name, quyen, SDT, sodiensau, sonuocsau, tienWifi, tienRac, taikhoan, matkhau);
+            }
+        } catch (const invalid_argument& e) {
+            cerr << "Invalid argument: " << e.what() << " in line: " << line << endl;
+        } catch (const out_of_range& e) {
+            cerr << "Out of range: " << e.what() << " in line: " << line << endl;
         }
     }
 
@@ -136,10 +147,28 @@ void FNode::ghiFile(const string& filename, int IdPhong, int tienPhong, const ve
         return;
     }
 
-    for (int i = 0; i < name.size(); ++i) {
+    for (size_t i = 0; i < name.size(); ++i) {
         file << IdPhong << "," << tienPhong << "," << name[i] << "," << quyen << "," << SDT[i] << "," << sodiensau << "," << sonuocsau << "," << tienWifi << "," << tienRac << "," << 0 << "," << 0 << "," << 0 << "," << 0 << "," << 0 << "," << taikhoan[i] << "," << matkhau[i] << endl;
     }
-    file << endl;
+    file << endl; // Thêm dòng trống giữa các phòng
+
+    file.close();
+}
+
+void FNode::ghiLaiFile(const string& filename) {
+    ofstream file(filename);
+    if (!file.is_open()) {
+        cerr << "Unable to open file: " << filename << endl;
+        return;
+    }
+
+    Node* temp = head;
+    while (temp) {
+        for (size_t i = 0; i < temp->name.size(); ++i) {
+            file << temp->IdPhong << "," << temp->tienPhong << "," << temp->name[i] << "," << temp->quyen << "," << temp->SDT[i] << "," << temp->sodiensau << "," << temp->sonuocsau << "," << temp->tienWifi << "," << temp->tienRac << "," << 0 << "," << 0 << "," << 0 << "," << 0 << "," << 0 << "," << temp->taikhoan[i] << "," << temp->matkhau[i] << endl;
+        }
+        temp = temp->next;
+    }
 
     file.close();
 }
