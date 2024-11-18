@@ -1,21 +1,23 @@
 #pragma once
-#include "Node.h"
-#include <iostream>
 #include <string>
 #include <fstream>
 #include <sstream>
+#include <vector>
+#include "Node.h"
+using namespace std;
 
 class FNode {
-	private:
+private:
     Node* head;
     Node* end;
-	public:
+public:
     FNode();
-    void them(int IdPhong, const string& name, const string& quyen,const string& SDT, int sodiensau, int sonuocsau,const string& taikhoan,const string& matkhau);
+    void them(int IdPhong, const vector<string>& name, const string& quyen, const vector<string>& SDT, int sodiensau, int sonuocsau, const vector<string>& taikhoan, const vector<string>& matkhau);
     Node* Find(int ID);
-    Node* dangnhap(const string& taikhoan,const string& matkhau);
+    Node* dangnhap(const string& taikhoan, const string& matkhau);
     ~FNode();
     void remove(int i);
     void loadfile(const string& filename);
+    void ghiFile(const string& filename, int IdPhong, const vector<string>& name, const string& quyen, const vector<string>& SDT, int sodiensau, int sonuocsau, const vector<string>& taikhoan, const vector<string>& matkhau);
 };
-#include "Fnode.cpp"
+#include "FNode.cpp"

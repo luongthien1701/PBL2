@@ -1,34 +1,33 @@
 #pragma once
 #include <iostream>
-#include <string.h>
+#include <string>
+#include <vector>
 using namespace std;
+
 class Node {
-	public:
+public:
     int IdPhong;
-    string name;
+    vector<string> name;
     string quyen;
-    string SDT;
-    int sodientruoc,sodiensau;
-    int sonuoctruoc,sonuocsau;
-    string taikhoan;
-    string matkhau;
+    vector<string> SDT;
+    int sodientruoc, sodiensau;
+    int sonuoctruoc, sonuocsau;
+    vector<string> taikhoan;
+    vector<string> matkhau;
     Node* prev;
     Node* next;
-    
-	public:
-	Node(int IdPhong,string name,string quyen,string SDT,int sodiensau,int sonuocsau,const string& taikhoan,const string& matkhau){
-		this->IdPhong=IdPhong;
-		this->name=name;
-		this->quyen=quyen;
-		this->SDT=SDT;
-		this->sodientruoc=0;
-		this->sodiensau=sodiensau;
-		this->sonuoctruoc=0;
-		this->sonuocsau=sonuocsau;
-		this->taikhoan=taikhoan;
-		this->matkhau=matkhau;
-		this->prev=NULL;
-		this->next=NULL;	
-	}	
-};
 
+public:
+    Node(int IdPhong, const vector<string>& name, string quyen, const vector<string>& SDT, int sodiensau, int sonuocsau, const vector<string>& taikhoan, const vector<string>& matkhau) {
+        this->IdPhong = IdPhong;
+        this->name = name;
+        this->quyen = quyen;
+        this->SDT = SDT;
+        this->sodiensau = sodiensau;
+        this->sonuocsau = sonuocsau;
+        this->taikhoan = taikhoan;
+        this->matkhau = matkhau;
+        this->prev = nullptr;
+        this->next = nullptr;
+    }
+};

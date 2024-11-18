@@ -1,102 +1,145 @@
 #include <iostream>
+#include <vector>
 #include "Node.h"
 #include "FNode.h"
 #include "User.h"
 #include "Admin.h"
+using namespace std;
 
 void showMenu(User* user) {
-    // Hiển thị menu tùy thuộc vào quyền
     if (dynamic_cast<Admin*>(user)) {
-        std::cout << "Menu Admin:\n";
-        std::cout << "1. Thêm phòng\n";
-        std::cout << "2. Cập nhật số điện\n";
-        std::cout << "3. Cập nhật số nước\n";
-        std::cout << "4. Xóa phòng\n";
-        std::cout << "5. Thoát\n";
+        cout << "Menu Admin:\n";
+        cout << "1. Thêm phòng\n";
+        cout << "2. Cập nhật số điện\n";
+        cout << "3. Cập nhật số nước\n";
+        cout << "4. Xóa phòng\n";
+        cout << "5. Thoát\n";
     } else {
-        std::cout << "Menu User:\n";
-        std::cout << "1. Xem thông tin phòng\n";
-        std::cout << "2. Thoát\n";
+        cout << "Menu User:\n";
+        cout << "1. Xem thông tin phòng\n";
+        cout << "2. Thoát\n";
     }
+}
+
+User* login(FNode& fnode) {
+    string taikhoan, matkhau;
+    cout << "Nhap tai khoan: ";
+    cin >> taikhoan;
+    cout << "Nhap mat khau: ";
+    cin >> matkhau;
+
+    Node* userNode = fnode.dangnhap(taikhoan, matkhau);
+    if (userNode) {
+        if (userNode->quyen == "admin") {
+            return new Admin(userNode);
+        } else {
+            return new User(userNode);
+        }
+    }
+    return nullptr;
 }
 
 int main() {
     FNode fnode;
-    fnode.loadfile("phongtro.txt"); // Đọc từ file
+    fnode.loadfile("phongtro.txt");
+    User* currentUser = nullptr;
 
-    std::string taikhoan, matkhau;
-    std::cout << "Nhap tai khoan: ";
-    std::cin >> taikhoan;
-    std::cout << "Nhap mat khau: ";
-    std::cin >> matkhau;
-
-    Node* userNode = fnode.dangnhap(taikhoan, matkhau);
-    if (!userNode) {
-        std::cout << "Dang nhap khong thanh cong!" << std::endl;
+    // Đăng nhập
+    currentUser = login(fnode);
+    if (!currentUser) {
+        cout << "Dang nhap that bai!\n";
         return 1;
     }
 
-    User* user;
-    if (userNode->quyen == "admin") {
-        user = new Admin(userNode);
-    } else {
-        user = new User(userNode);
-    }
-
     while (true) {
-        showMenu(user);
+        showMenu(currentUser);
         int choice;
-        std::cin >> choice;
+        cout << "Nhap lua chon: ";
+        cin >> choice;
 
-        if (dynamic_cast<Admin*>(user)) {
-            Admin* adminUser = dynamic_cast<Admin*>(user); // Chuyển đổi sang Admin
-
+        if (dynamic_cast<Admin*>(currentUser)) {
+            Admin* adminUser = dynamic_cast<Admin*>(currentUser);
             switch (choice) {
                 case 1: {
                     int IdPhong, sodiensau, sonuocsau;
-                    std::string name, quyen, SDT, taikhoan, matkhau;
-                    std::cout << "Nhap IdPhong, Ten, Quyen, SDT, So dien sau, So nuoc sau, Tai khoan, Mat khau: ";
-                    std::cin >> IdPhong >> name >> quyen >> SDT >> sodiensau >> sonuocsau >> taikhoan >> matkhau;
+                    vector<string> name, SDT, taikhoan, matkhau;
+                    string quyen, temp;
+
+                    cout << "Nhap IdPhong: ";
+                    cin >> IdPhong;
+                    cout << "Nhap quyen: ";
+                    cin >> quyen;
+                    cout << "Nhap so dien sau: ";
+                    cin >> sodiensau;
+                    cout << "Nhap so nuoc sau: ";
+                    cin >> sonuocsau;
+
+                    cout << "Nhap ten (ket thuc bang '|'): ";
+                    while (cin >> temp && temp != "|") {
+                        name.push_back(temp);
+                    }
+
+                    cout << "Nhap SDT (ket thuc bang '|'): ";
+                    while (cin >> temp && temp != "|") {
+                        SDT.push_back(temp);
+                    }
+
+                    cout << "Nhap tai khoan (ket thuc bang '|'): ";
+                    while (cin >> temp && temp != "|") {
+                        taikhoan.push_back(temp);
+                    }
+
+                    cout << "Nhap mat khau (ket thuc bang '|'): ";
+                    while (cin >> temp && temp != "|") {
+                        matkhau.push_back(temp);
+                    }
+                
                     adminUser->them(fnode, IdPhong, name, quyen, SDT, sodiensau, sonuocsau, taikhoan, matkhau);
                     break;
                 }
                 case 2: {
                     int IdPhong, sodiensau;
-                    std::cout << "Nhap IdPhong va So dien sau: ";
-                    std::cin >> IdPhong >> sodiensau;
+                    cout << "Nhap IdPhong va So dien sau: ";
+                    cin >> IdPhong >> sodiensau;
                     adminUser->capnhatsodien(fnode, IdPhong, sodiensau);
                     break;
                 }
                 case 3: {
                     int IdPhong, sonuocsau;
-                    std::cout << "Nhap IdPhong va So nuoc sau: ";
-                    std::cin >> IdPhong >> sonuocsau;
+                    cout << "Nhap IdPhong va So nuoc sau: ";
+                    cin >> IdPhong >> sonuocsau;
                     adminUser->capnhatsonuoc(fnode, IdPhong, sonuocsau);
                     break;
                 }
                 case 4: {
                     int IdPhong;
-                    std::cout << "Nhap IdPhong de xoa: ";
-                    std::cin >> IdPhong;
+                    cout << "Nhap IdPhong can xoa: ";
+                    cin >> IdPhong;
                     adminUser->remove(fnode, IdPhong);
                     break;
                 }
                 case 5:
-                    delete user;
+                    delete currentUser;
                     return 0;
+                default:
+                    cout << "Lua chon khong hop le. Vui long thu lai.\n";
+                    break;
             }
         } else {
             switch (choice) {
-                case 1:
-                    user->display();
+                case 1: {
+                    currentUser->display();
                     break;
+                }
                 case 2:
-                    delete user;
+                    delete currentUser;
                     return 0;
+                default:
+                    cout << "Lua chon khong hop le. Vui long thu lai.\n";
+                    break;
             }
         }
     }
 
-    delete user; // Giải phóng bộ nhớ
     return 0;
 }

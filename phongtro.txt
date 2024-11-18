@@ -1,0 +1,4 @@
+101,Nguyen Van A,user,0123456789,100,50,user1,user_pass
+101,Nguyen Van B,user,0123456789,100,50,user2,user_pass
+102,Tran Van B,admin,0987654321,200,100,admin,admin_pass
+103,thien,user,0216,1,1,user3,user3

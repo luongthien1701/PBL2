@@ -1,13 +1,17 @@
 #pragma once
 #include "User.h"
 #include "FNode.h"
-class Admin:public User{
-	public:
-		Admin(Node* temp);
-		void them(FNode& tmp,int IdPhong,string name,string quyen,string SDT,int sodiensau,int sonuocsau,const string& taikhoan,const string& matkhau);
-		void capnhatsodien(FNode& tmp,int IdPhong,int sodiensau);
-		void capnhatsonuoc(FNode& tmp,int IdPhong,int sonuocsau);
-		void remove(FNode& tmp,int IdPhong);
+#include "vector.h"
+#include <fstream>
+using namespace std;
+
+class Admin : public User {
+public:
+    Admin(Node* temp);
+    void them(FNode& temp, int IdPhong, const vector<string>& name, string quyen, const vector<string>& SDT, int sodiensau, int sonuocsau, const vector<string>& taikhoan, const vector<string>& matkhau);
+    void capnhatsodien(FNode& temp, int IdPhong, int sodiensau);
+    void capnhatsonuoc(FNode& temp, int IdPhong, int sonuocsau);
+    void remove(FNode& temp, int IdPhong);
 };
 #include "admin.cpp"
 

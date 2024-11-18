@@ -1,9 +1,8 @@
 #include "FNode.h"
-using namespace std;
-FNode::FNode() {
-    this->head = NULL;
-    this->end = NULL;
-}
+#include <vector>
+
+FNode::FNode() : head(nullptr), end(nullptr) {}
+
 FNode::~FNode() {
     Node* temp = head;
     while (temp) {
@@ -12,7 +11,8 @@ FNode::~FNode() {
         delete deleteNode;
     }
 }
-void FNode::them(int IdPhong, const string& name, const string& quyen, const string& SDT, int sodiensau, int sonuocsau, const string& taikhoan, const string& matkhau) {
+
+void FNode::them(int IdPhong, const vector<string>& name, const string& quyen, const vector<string>& SDT, int sodiensau, int sonuocsau, const vector<string>& taikhoan, const vector<string>& matkhau) {
     Node* newNode = new Node(IdPhong, name, quyen, SDT, sodiensau, sonuocsau, taikhoan, matkhau);
     if (!head) {
         head = end = newNode;
@@ -22,82 +22,93 @@ void FNode::them(int IdPhong, const string& name, const string& quyen, const str
         end = newNode;
     }
 }
+
 Node* FNode::Find(int ID) {
     Node* temp = head;
     while (temp) {
-        if (temp->IdPhong == ID) {  
+        if (temp->IdPhong == ID) {
             return temp;
         }
         temp = temp->next;
     }
-    return NULL;
+    return nullptr;
 }
-void FNode::remove(int IdPhong) {
-    Node* temp = head;
-    while (temp) {
-        if (temp->IdPhong == IdPhong) {
-            if (temp == head) {
-                head = temp->next;
-                if (head) {
-                    head->prev = NULL;
-                }
-            } else if (temp == end) {
-                end = temp->prev;
-                if (end) {
-                    end->next = NULL;
-                }
-            } else {
-                temp->prev->next = temp->next;
-                temp->next->prev = temp->prev;
-            }
-            delete temp;
-            return; 
-        }
-        temp = temp->next;
-    }
-}
+
 Node* FNode::dangnhap(const string& taikhoan, const string& matkhau) {
     Node* temp = head;
     while (temp) {
-        if (temp->taikhoan == taikhoan && temp->matkhau == matkhau) {
-            return temp;
+        for (int i = 0; i < temp->taikhoan.size(); ++i) {
+            if (temp->taikhoan[i] == taikhoan && temp->matkhau[i] == matkhau) {
+                return temp;
+            }
         }
         temp = temp->next;
     }
-    cout << "Dang nhap khong thanh cong!" << endl;
-    return NULL;
+    return nullptr;
 }
+
+void FNode::remove(int IdPhong) {
+    Node* temp = Find(IdPhong);
+    if (temp) {
+        if (temp->prev) {
+            temp->prev->next = temp->next;
+        } else {
+            head = temp->next;
+        }
+        if (temp->next) {
+            temp->next->prev = temp->prev;
+        } else {
+            end = temp->prev;
+        }
+        delete temp;
+    }
+}
+
 void FNode::loadfile(const string& filename) {
-    ifstream tofile(filename.c_str());
-    if (!tofile.is_open()) {
-        cout << "Khong the mo file " << filename << "\n";
+    ifstream file(filename);
+    if (!file.is_open()) {
+        cerr << "Unable to open file: " << filename << endl;
         return;
     }
 
     string line;
-    while (getline(tofile, line)) {
+    while (getline(file, line)) {
         stringstream ss(line);
-        string tmp;
-        int IdPhong, sodien, sonuoc;
-        string name, quyen, SDT, taikhoan, matkhau;
+        int IdPhong, sodiensau, sonuocsau;
+        string tenNguoi, quyen, sdt, taiKhoan, matKhau;
 
-        getline(ss, tmp, ',');
-        IdPhong = stoi(tmp);
-        
-        getline(ss, name, ',');
+        getline(ss, line, ',');
+        IdPhong = stoi(line);
+        getline(ss, tenNguoi, ',');
         getline(ss, quyen, ',');
-        getline(ss, SDT, ',');
+        getline(ss, sdt, ',');
+        getline(ss, line, ',');
+        sodiensau = stoi(line);
+        getline(ss, line, ',');
+        sonuocsau = stoi(line);
+        getline(ss, taiKhoan, ',');
+        getline(ss, matKhau, ',');
 
-        getline(ss, tmp, ',');
-        sodien = stoi(tmp);
+        vector<string> name = {tenNguoi};
+        vector<string> SDT = {sdt};
+        vector<string> taikhoan = {taiKhoan};
+        vector<string> matkhau = {matKhau};
 
-        getline(ss, tmp, ',');
-        sonuoc = stoi(tmp);
-
-        getline(ss, taikhoan, ',');
-        getline(ss, matkhau, ',');
-
-        them(IdPhong, name, quyen, SDT, sodien, sonuoc, taikhoan, matkhau);
+        them(IdPhong, name, quyen, SDT, sodiensau, sonuocsau, taikhoan, matkhau);
     }
-    tofile.close();
+
+    file.close();
+}
+void FNode::ghiFile(const string& filename, int IdPhong, const vector<string>& name, const string& quyen, const vector<string>& SDT, int sodiensau, int sonuocsau, const vector<string>& taikhoan, const vector<string>& matkhau) {
+    ofstream file(filename, ios::app);
+    if (!file.is_open()) {
+        cerr << "Unable to open file: " << filename << endl;
+        return;
+    }
+    file<<endl;
+    for (size_t i = 0; i < name.size(); ++i) {
+        file << IdPhong << "," << name[i] << "," << quyen << "," << SDT[i] << "," << sodiensau << "," << sonuocsau << "," << taikhoan[i] << "," << matkhau[i] << endl;
+    }
+
+    file.close();
 }
