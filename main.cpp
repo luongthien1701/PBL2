@@ -44,8 +44,6 @@ int main() {
     FNode fnode;
     fnode.loadfile("phongtro.txt");
     User* currentUser = nullptr;
-
-    // Đăng nhập
     while (!currentUser) {
         currentUser = login(fnode);
         if (!currentUser) {

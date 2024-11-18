@@ -41,7 +41,7 @@ Node* FNode::Find(int ID) {
 Node* FNode::dangnhap(const string& taikhoan, const string& matkhau) {
     Node* temp = head;
     while (temp) {
-        for (size_t i = 0; i < temp->taikhoan.size(); ++i) {
+        for (int i = 0; i < temp->taikhoan.size(); ++i) {
             if (temp->taikhoan[i] == taikhoan && temp->matkhau[i] == matkhau) {
                 return temp;
             }
@@ -136,10 +136,10 @@ void FNode::ghiFile(const string& filename, int IdPhong, int tienPhong, const ve
         return;
     }
 
-    for (size_t i = 0; i < name.size(); ++i) {
+    for (int i = 0; i < name.size(); ++i) {
         file << IdPhong << "," << tienPhong << "," << name[i] << "," << quyen << "," << SDT[i] << "," << sodiensau << "," << sonuocsau << "," << tienWifi << "," << tienRac << "," << 0 << "," << 0 << "," << 0 << "," << 0 << "," << 0 << "," << taikhoan[i] << "," << matkhau[i] << endl;
     }
-    file << endl; // Thêm dòng trống giữa các phòng
+    file << endl;
 
     file.close();
 }
