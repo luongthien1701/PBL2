@@ -11,6 +11,7 @@ public:
     void capnhatsodien(FNode& temp, int IdPhong, int sodiensau);
     void capnhatsonuoc(FNode& temp, int IdPhong, int sonuocsau);
     void remove(FNode& temp, int IdPhong);
+    void capnhatTrangThaiThanhToan(FNode& temp, int IdPhong, const string& dichVu);
     void display() override;
 };
 #include "Admin.cpp"

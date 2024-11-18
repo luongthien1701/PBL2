@@ -14,7 +14,8 @@ void showMenu(User* user) {
         cout << "3. Cập nhật số nước\n";
         cout << "4. Xóa phòng\n";
         cout << "5. Xem thông tin phòng\n";
-        cout << "6. Thoát\n";
+        cout << "6. Cập nhật trạng thái thanh toán\n";
+        cout << "7. Thoát\n";
     } else {
         cout << "Menu User:\n";
         cout << "1. Xem thông tin phòng\n";
@@ -174,7 +175,24 @@ int main() {
                     }
                     break;
                 }
-                case 6:
+                case 6: {
+                    while (true) {
+                        int IdPhong;
+                        string dichVu;
+                        cout << "Nhap IdPhong can cap nhat trang thai thanh toan: ";
+                        cin >> IdPhong;
+                        cout << "Nhap dich vu can cap nhat (phong, dien, nuoc, wifi, rac): ";
+                        cin >> dichVu;
+                        adminUser->capnhatTrangThaiThanhToan(fnode, IdPhong, dichVu);
+
+                        cout << "Nhap 0 de quay lai menu: ";
+                        int back;
+                        cin >> back;
+                        if (back == 0) break;
+                    }
+                    break;
+                }
+                case 7:
                     delete currentUser;
                     return 0;
                 default:

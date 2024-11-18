@@ -28,11 +28,29 @@ void Admin::remove(FNode& temp, int IdPhong) {
     temp.remove(IdPhong);
 }
 
+void Admin::capnhatTrangThaiThanhToan(FNode& temp, int IdPhong, const string& dichVu) {
+    Node* tmp = temp.Find(IdPhong);
+    if (tmp) {
+        if (dichVu == "phong") {
+            tmp->daDongTienPhong = true;
+        } else if (dichVu == "dien") {
+            tmp->daDongTienDien = true;
+        } else if (dichVu == "nuoc") {
+            tmp->daDongTienNuoc = true;
+        } else if (dichVu == "wifi") {
+            tmp->daDongTienWifi = true;
+        } else if (dichVu == "rac") {
+            tmp->daDongTienRac = true;
+        }
+        temp.ghiLaiFile("phongtro.txt");
+    }
+}
+
 void Admin::display() {
     if (temp) {
         cout << "So phong: " << temp->IdPhong << endl;
         cout << "Tien phong: " << temp->tienPhong << endl;
-        for (int i = 0; i < temp->name.size(); ++i) {
+        for (size_t i = 0; i < temp->name.size(); ++i) {
             cout << "Ten: " << temp->name[i] << endl;
             cout << "SDT: " << temp->SDT[i] << endl;
             cout << "Tai khoan: " << temp->taikhoan[i] << endl;
