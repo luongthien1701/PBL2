@@ -1,7 +1,6 @@
 #pragma once
 #include <string>
 #include <iostream>
-#include <vector>
 #include "Node.h"
 using namespace std;
 
@@ -15,11 +14,12 @@ public:
         if (temp) {
             cout << "So phong: " << temp->IdPhong << endl;
             cout << "Tien phong: " << temp->tienPhong << endl;
-            cout << "Ten: " << temp->name[0] << endl;
-            cout << "SDT: " << temp->SDT[0] << endl;
-            cout << "Tai khoan: " << temp->taikhoan[0] << endl;
-            cout << "Mat khau: " << temp->matkhau[0] << endl;
-            cout << "Quyen: " << temp->quyen << endl;
+            for (size_t i = 0; i < temp->name.getsize(); ++i) {
+                cout << "Ten: " << temp->name[i] << endl;
+                cout << "SDT: " << temp->SDT[i] << endl;
+                cout << "Tai khoan: " << temp->taikhoan[i] << endl;
+                cout << "Mat khau: " << temp->matkhau[i] << endl;
+            }
             cout << "So dien truoc: " << temp->sodientruoc << endl;
             cout << "So dien sau: " << temp->sodiensau << endl;
             cout << "So nuoc truoc: " << temp->sonuoctruoc << endl;

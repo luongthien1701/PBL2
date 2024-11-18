@@ -1,5 +1,4 @@
 #include <iostream>
-#include <vector>
 #include "Node.h"
 #include "FNode.h"
 #include "User.h"
@@ -29,14 +28,14 @@ User* login(FNode& fnode) {
     cin >> taikhoan;
     cout << "Nhap mat khau: ";
     cin >> matkhau;
-
-    Node* userNode = fnode.dangnhap(taikhoan, matkhau);
-    if (userNode) {
-        if (userNode->quyen == "admin") {
-            return new Admin(userNode);
-        } else {
-            return new User(userNode);
+    Node* adminNode = fnode.loginAdmin(taikhoan, matkhau);
+    if (adminNode) {
+            return new Admin(adminNode);
         }
+
+    Node* userNode = fnode.loginUser(taikhoan, matkhau);
+    if (userNode) {
+        return new User(userNode);
     }
     return nullptr;
 }
@@ -44,6 +43,7 @@ User* login(FNode& fnode) {
 int main() {
     FNode fnode;
     fnode.loadfile("phongtro.txt");
+    fnode.loadAdminFile("admin.txt");
     User* currentUser = nullptr;
 
     // Đăng nhập
@@ -67,15 +67,13 @@ int main() {
                 case 1: {
                     while (true) {
                         int IdPhong, tienPhong, sodiensau, sonuocsau;
-                        vector<string> name, SDT, taikhoan, matkhau;
-                        string quyen, temp;
+                        Vector<string> name, SDT, taikhoan, matkhau;
+                        string temp;
 
                         cout << "Nhap IdPhong: ";
                         cin >> IdPhong;
                         cout << "Nhap tien phong: ";
                         cin >> tienPhong;
-                        cout << "Nhap quyen: ";
-                        cin >> quyen;
                         cout << "Nhap so dien sau: ";
                         cin >> sodiensau;
                         cout << "Nhap so nuoc sau: ";
@@ -102,9 +100,9 @@ int main() {
                         }
 
                         int tienWifi = 50;
-                        int tienRac = 50 * name.size();
+                        int tienRac = 50 * name.getsize();
 
-                        adminUser->them(fnode, IdPhong, tienPhong, name, quyen, SDT, sodiensau, sonuocsau, tienWifi, tienRac, taikhoan, matkhau);
+                        adminUser->them(fnode, IdPhong, tienPhong, name, SDT, sodiensau, sonuocsau, tienWifi, tienRac, taikhoan, matkhau);
 
                         cout << "Nhap 0 de quay lai menu: ";
                         int back;

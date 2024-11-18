@@ -1,9 +1,9 @@
-#include "vector.h"
+#include "Vector.h"
+#include <stdexcept>
 
 template <typename T>
-Vector<T>::Vector(int capacity) {
+Vector<T>::Vector(int capacity) : capacity(capacity), size(0) {
     data = new T[capacity];
-    size = 0;
 }
 
 template <typename T>
@@ -13,6 +13,9 @@ Vector<T>::~Vector() {
 
 template <typename T>
 void Vector<T>::push_back(const T& value) {
+    if (size >= capacity) {
+        throw std::out_of_range("Vector capacity exceeded");
+    }
     data[size++] = value;
 }
 
@@ -23,15 +26,16 @@ int Vector<T>::getsize() const {
 
 template <typename T>
 T& Vector<T>::operator[](int index) {
+    if (index < 0 || index >= size) {
+        throw std::out_of_range("Index out of range");
+    }
     return data[index];
 }
 
 template <typename T>
 const T& Vector<T>::operator[](int index) const {
+    if (index < 0 || index >= size) {
+        throw std::out_of_range("Index out of range");
+    }
     return data[index];
-}
-
-template <typename T>
-void Vector<T>::update(int index, const T& value) {
-    data[index] = value;
 }

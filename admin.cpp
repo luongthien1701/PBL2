@@ -3,9 +3,9 @@
 
 Admin::Admin(Node* temp) : User(temp) {}
 
-void Admin::them(FNode& temp, int IdPhong, int tienPhong, const vector<string>& name, string quyen, const vector<string>& SDT, int sodiensau, int sonuocsau, int tienWifi, int tienRac, const vector<string>& taikhoan, const vector<string>& matkhau) {
-    temp.them(IdPhong, tienPhong, name, quyen, SDT, sodiensau, sonuocsau, tienWifi, tienRac, taikhoan, matkhau);
-    temp.ghiFile("phongtro.txt", IdPhong, tienPhong, name, quyen, SDT, sodiensau, sonuocsau, tienWifi, tienRac, taikhoan, matkhau);
+void Admin::them(FNode& temp, int IdPhong, int tienPhong, const Vector<string>& name, const Vector<string>& SDT, int sodiensau, int sonuocsau, int tienWifi, int tienRac, const Vector<string>& taikhoan, const Vector<string>& matkhau) {
+    temp.them(IdPhong, tienPhong, name, SDT, sodiensau, sonuocsau, tienWifi, tienRac, taikhoan, matkhau);
+    temp.ghiFile("phongtro.txt", IdPhong, tienPhong, name, SDT, sodiensau, sonuocsau, tienWifi, tienRac, taikhoan, matkhau);
 }
 
 void Admin::capnhatsodien(FNode& temp, int IdPhong, int sodiensau) {
@@ -52,13 +52,12 @@ void Admin::display() {
     if (temp) {
         cout << "So phong: " << temp->IdPhong << endl;
         cout << "Tien phong: " << temp->tienPhong << endl;
-        for (size_t i = 0; i < temp->name.size(); ++i) {
+        for (size_t i = 0; i < temp->name.getsize(); ++i) {
             cout << "Ten: " << temp->name[i] << endl;
             cout << "SDT: " << temp->SDT[i] << endl;
             cout << "Tai khoan: " << temp->taikhoan[i] << endl;
             cout << "Mat khau: " << temp->matkhau[i] << endl;
         }
-        cout << "Quyen: " << temp->quyen << endl;
         cout << "So dien truoc: " << temp->sodientruoc << endl;
         cout << "So dien sau: " << temp->sodiensau << endl;
         cout << "So nuoc truoc: " << temp->sonuoctruoc << endl;

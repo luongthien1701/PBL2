@@ -1,3 +1,2 @@
 101,500000,Nguyen Van A,user,0123456789,100,50,50,100,1,0,0,0,0,user1,user_pass
 101,500000,Nguyen Van B,user,0123456789,100,50,50,100,1,0,0,0,0,user2,user_pass
-102,600000,Tran Van B,admin,0987654321,200,100,50,150,0,0,0,0,0,admin,admin_pass
