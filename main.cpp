@@ -13,7 +13,8 @@ void showMenu(User* user) {
         cout << "2. Cập nhật số điện\n";
         cout << "3. Cập nhật số nước\n";
         cout << "4. Xóa phòng\n";
-        cout << "5. Thoát\n";
+        cout << "5. Xem thông tin phòng\n";
+        cout << "6. Thoát\n";
     } else {
         cout << "Menu User:\n";
         cout << "1. Xem thông tin phòng\n";
@@ -62,12 +63,14 @@ int main() {
             Admin* adminUser = dynamic_cast<Admin*>(currentUser);
             switch (choice) {
                 case 1: {
-                    int IdPhong, sodiensau, sonuocsau;
+                    int IdPhong, tienPhong, sodiensau, sonuocsau;
                     vector<string> name, SDT, taikhoan, matkhau;
                     string quyen, temp;
 
                     cout << "Nhap IdPhong: ";
                     cin >> IdPhong;
+                    cout << "Nhap tien phong: ";
+                    cin >> tienPhong;
                     cout << "Nhap quyen: ";
                     cin >> quyen;
                     cout << "Nhap so dien sau: ";
@@ -95,7 +98,10 @@ int main() {
                         matkhau.push_back(temp);
                     }
 
-                    adminUser->them(fnode, IdPhong, name, quyen, SDT, sodiensau, sonuocsau, taikhoan, matkhau);
+                    int tienWifi = 50;
+                    int tienRac = 50 * name.size();
+
+                    adminUser->them(fnode, IdPhong, tienPhong, name, quyen, SDT, sodiensau, sonuocsau, tienWifi, tienRac, taikhoan, matkhau);
                     break;
                 }
                 case 2: {
@@ -119,7 +125,20 @@ int main() {
                     adminUser->remove(fnode, IdPhong);
                     break;
                 }
-                case 5:
+                case 5: {
+                    int IdPhong;
+                    cout << "Nhap IdPhong can xem thong tin: ";
+                    cin >> IdPhong;
+                    Node* node = fnode.Find(IdPhong);
+                    if (node) {
+                        Admin tempAdmin(node);
+                        tempAdmin.display();
+                    } else {
+                        cout << "Khong tim thay phong voi IdPhong: " << IdPhong << endl;
+                    }
+                    break;
+                }
+                case 6:
                     delete currentUser;
                     return 0;
                 default:

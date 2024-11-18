@@ -1,5 +1,9 @@
 #include "FNode.h"
+#include "Node.h"
 #include <vector>
+#include <fstream>
+#include <sstream>
+#include <iostream>
 
 FNode::FNode() : head(nullptr), end(nullptr) {}
 
@@ -12,8 +16,8 @@ FNode::~FNode() {
     }
 }
 
-void FNode::them(int IdPhong, const vector<string>& name, const string& quyen, const vector<string>& SDT, int sodiensau, int sonuocsau, const vector<string>& taikhoan, const vector<string>& matkhau) {
-    Node* newNode = new Node(IdPhong, name, quyen, SDT, sodiensau, sonuocsau, taikhoan, matkhau);
+void FNode::them(int IdPhong, int tienPhong, const vector<string>& name, const string& quyen, const vector<string>& SDT, int sodiensau, int sonuocsau, int tienWifi, int tienRac, const vector<string>& taikhoan, const vector<string>& matkhau) {
+    Node* newNode = new Node(IdPhong, tienPhong, name, quyen, SDT, sodiensau, sonuocsau, tienWifi, tienRac, taikhoan, matkhau);
     if (!head) {
         head = end = newNode;
     } else {
@@ -37,7 +41,7 @@ Node* FNode::Find(int ID) {
 Node* FNode::dangnhap(const string& taikhoan, const string& matkhau) {
     Node* temp = head;
     while (temp) {
-        for (int i = 0; i < temp->taikhoan.size(); ++i) {
+        for (size_t i = 0; i < temp->taikhoan.size(); ++i) {
             if (temp->taikhoan[i] == taikhoan && temp->matkhau[i] == matkhau) {
                 return temp;
             }
@@ -74,11 +78,14 @@ void FNode::loadfile(const string& filename) {
     string line;
     while (getline(file, line)) {
         stringstream ss(line);
-        int IdPhong, sodiensau, sonuocsau;
+        int IdPhong, tienPhong, sodiensau, sonuocsau, tienWifi, tienRac;
         string tenNguoi, quyen, sdt, taiKhoan, matKhau;
+        bool daDongTienPhong, daDongTienDien, daDongTienNuoc, daDongTienWifi, daDongTienRac;
 
         getline(ss, line, ',');
         IdPhong = stoi(line);
+        getline(ss, line, ',');
+        tienPhong = stoi(line);
         getline(ss, tenNguoi, ',');
         getline(ss, quyen, ',');
         getline(ss, sdt, ',');
@@ -86,29 +93,53 @@ void FNode::loadfile(const string& filename) {
         sodiensau = stoi(line);
         getline(ss, line, ',');
         sonuocsau = stoi(line);
+        getline(ss, line, ',');
+        tienWifi = stoi(line);
+        getline(ss, line, ',');
+        tienRac = stoi(line);
+        getline(ss, line, ',');
+        daDongTienPhong = stoi(line);
+        getline(ss, line, ',');
+        daDongTienDien = stoi(line);
+        getline(ss, line, ',');
+        daDongTienNuoc = stoi(line);
+        getline(ss, line, ',');
+        daDongTienWifi = stoi(line);
+        getline(ss, line, ',');
+        daDongTienRac = stoi(line);
         getline(ss, taiKhoan, ',');
         getline(ss, matKhau, ',');
 
-        vector<string> name = {tenNguoi};
-        vector<string> SDT = {sdt};
-        vector<string> taikhoan = {taiKhoan};
-        vector<string> matkhau = {matKhau};
+        Node* existingNode = Find(IdPhong);
+        if (existingNode) {
+            existingNode->name.push_back(tenNguoi);
+            existingNode->SDT.push_back(sdt);
+            existingNode->taikhoan.push_back(taiKhoan);
+            existingNode->matkhau.push_back(matKhau);
+        } else {
+            vector<string> name = {tenNguoi};
+            vector<string> SDT = {sdt};
+            vector<string> taikhoan = {taiKhoan};
+            vector<string> matkhau = {matKhau};
 
-        them(IdPhong, name, quyen, SDT, sodiensau, sonuocsau, taikhoan, matkhau);
+            them(IdPhong, tienPhong, name, quyen, SDT, sodiensau, sonuocsau, tienWifi, tienRac, taikhoan, matkhau);
+        }
     }
 
     file.close();
 }
-void FNode::ghiFile(const string& filename, int IdPhong, const vector<string>& name, const string& quyen, const vector<string>& SDT, int sodiensau, int sonuocsau, const vector<string>& taikhoan, const vector<string>& matkhau) {
+
+void FNode::ghiFile(const string& filename, int IdPhong, int tienPhong, const vector<string>& name, const string& quyen, const vector<string>& SDT, int sodiensau, int sonuocsau, int tienWifi, int tienRac, const vector<string>& taikhoan, const vector<string>& matkhau) {
     ofstream file(filename, ios::app);
     if (!file.is_open()) {
         cerr << "Unable to open file: " << filename << endl;
         return;
     }
-    file<<endl;
+
     for (size_t i = 0; i < name.size(); ++i) {
-        file << IdPhong << "," << name[i] << "," << quyen << "," << SDT[i] << "," << sodiensau << "," << sonuocsau << "," << taikhoan[i] << "," << matkhau[i] << endl;
+        file << IdPhong << "," << tienPhong << "," << name[i] << "," << quyen << "," << SDT[i] << "," << sodiensau << "," << sonuocsau << "," << tienWifi << "," << tienRac << "," << 0 << "," << 0 << "," << 0 << "," << 0 << "," << 0 << "," << taikhoan[i] << "," << matkhau[i] << endl;
     }
+    file << endl; // Thêm dòng trống giữa các phòng
 
     file.close();
 }

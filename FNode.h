@@ -12,12 +12,12 @@ private:
     Node* end;
 public:
     FNode();
-    void them(int IdPhong, const vector<string>& name, const string& quyen, const vector<string>& SDT, int sodiensau, int sonuocsau, const vector<string>& taikhoan, const vector<string>& matkhau);
+    void them(int IdPhong, int tienPhong, const vector<string>& name, const string& quyen, const vector<string>& SDT, int sodiensau, int sonuocsau, int tienWifi, int tienRac, const vector<string>& taikhoan, const vector<string>& matkhau);
     Node* Find(int ID);
     Node* dangnhap(const string& taikhoan, const string& matkhau);
     ~FNode();
     void remove(int i);
     void loadfile(const string& filename);
-    void ghiFile(const string& filename, int IdPhong, const vector<string>& name, const string& quyen, const vector<string>& SDT, int sodiensau, int sonuocsau, const vector<string>& taikhoan, const vector<string>& matkhau);
+    void ghiFile(const string& filename, int IdPhong, int tienPhong, const vector<string>& name, const string& quyen, const vector<string>& SDT, int sodiensau, int sonuocsau, int tienWifi, int tienRac, const vector<string>& taikhoan, const vector<string>& matkhau);
 };
 #include "FNode.cpp"
