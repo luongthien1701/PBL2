@@ -45,10 +45,11 @@ int main() {
     User* currentUser = nullptr;
 
     // Đăng nhập
-    currentUser = login(fnode);
-    if (!currentUser) {
-        cout << "Dang nhap that bai!\n";
-        return 1;
+    while (!currentUser) {
+        currentUser = login(fnode);
+        if (!currentUser) {
+            cout << "Dang nhap that bai! Vui long thu lai.\n";
+        }
     }
 
     while (true) {
@@ -93,7 +94,7 @@ int main() {
                     while (cin >> temp && temp != "|") {
                         matkhau.push_back(temp);
                     }
-                
+
                     adminUser->them(fnode, IdPhong, name, quyen, SDT, sodiensau, sonuocsau, taikhoan, matkhau);
                     break;
                 }
