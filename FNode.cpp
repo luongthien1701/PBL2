@@ -165,7 +165,7 @@ void FNode::ghiLaiFile(const string& filename) {
     Node* temp = head;
     while (temp) {
         for (size_t i = 0; i < temp->name.size(); ++i) {
-            file << temp->IdPhong << "," << temp->tienPhong << "," << temp->name[i] << "," << temp->quyen << "," << temp->SDT[i] << "," << temp->sodiensau << "," << temp->sonuocsau << "," << temp->tienWifi << "," << temp->tienRac << "," << 0 << "," << 0 << "," << 0 << "," << 0 << "," << 0 << "," << temp->taikhoan[i] << "," << temp->matkhau[i] << endl;
+            file << temp->IdPhong << "," << temp->tienPhong << "," << temp->name[i] << "," << temp->quyen << "," << temp->SDT[i] << "," << temp->sodiensau << "," << temp->sonuocsau << "," << temp->tienWifi << "," << temp->tienRac << "," << (temp->daDongTienPhong ? 1 : 0) << "," << (temp->daDongTienDien ? 1 : 0) << "," << (temp->daDongTienNuoc ? 1 : 0) << "," << (temp->daDongTienWifi ? 1 : 0) << "," << (temp->daDongTienRac ? 1 : 0) << "," << temp->taikhoan[i] << "," << temp->matkhau[i] << endl;
         }
         temp = temp->next;
     }

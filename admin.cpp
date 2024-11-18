@@ -14,6 +14,7 @@ void Admin::capnhatsodien(FNode& temp, int IdPhong, int sodiensau) {
         tmp->sodientruoc = tmp->sodiensau;
         tmp->sodiensau = sodiensau;
     }
+    temp.ghiLaiFile("phongtro.txt");
 }
 
 void Admin::capnhatsonuoc(FNode& temp, int IdPhong, int sonuocsau) {
@@ -22,6 +23,7 @@ void Admin::capnhatsonuoc(FNode& temp, int IdPhong, int sonuocsau) {
         tmp->sonuoctruoc = tmp->sonuocsau;
         tmp->sonuocsau = sonuocsau;
     }
+    temp.ghiLaiFile("phongtro.txt");
 }
 
 void Admin::remove(FNode& temp, int IdPhong) {
