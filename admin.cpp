@@ -50,10 +50,10 @@ void Admin::capnhatTrangThaiThanhToan(FNode& temp, int IdPhong, const string& di
 
 void Admin::display() {
     if (temp) {
-        cout << "So phong: " << temp->IdPhong << endl;
-        cout << "Tien phong: " << temp->tienPhong << endl;
+        cout << "So phong: " << temp->IdPhong << end;
+        cout << "Tien phong: " << temp->tienPhong << end;
         for (size_t i = 0; i < temp->name.getsize(); ++i) {
-            cout << "Ten: " << temp->name[i] << endl;
+            cout << "Ten: " << temp->name[i] << end;
             cout << "SDT: " << temp->SDT[i] << endl;
             cout << "Tai khoan: " << temp->taikhoan[i] << endl;
             cout << "Mat khau: " << temp->matkhau[i] << endl;
